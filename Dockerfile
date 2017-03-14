@@ -121,35 +121,5 @@ RUN set -x \
 # see CA_CERTIFICATES_JAVA_VERSION notes above
 RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
-# setup maven
-ARG MAVEN_VERSION=3.3.9
-ARG USER_HOME_DIR="/root"
-
-RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
-  && curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
-    | tar -xzC /usr/share/maven --strip-components=1 \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-
-COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
-COPY settings-docker.xml /usr/share/maven/ref/
-
-VOLUME "$USER_HOME_DIR/.m2"
-
-# setup jpy
-ENV JDK_HOME /usr/lib/jvm/java-8-openjdk-amd64
-
-RUN cd /root \
-    && git clone https://github.com/bcdev/jpy.git \
-    && cd jpy \
-    && git fetch --all --tags --prune \
-    && git checkout tags/0.8 -b v0.8
-
-RUN cd /root/jpy \
-    && python setup.py --maven build
-
-ENV PYTHONPATH=/root/jpy/build/lib.linux-x86_64-3.6
-
+RUN pip install JPype1==0.6.2
 
