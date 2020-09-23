@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7
 
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 
@@ -16,6 +16,9 @@ RUN set -e; \
     apt-get clean; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
+ENV JCC_JDK=/usr/lib/jvm/zulu-8-amd64/
+
 RUN set -e; \
-    pip install JPype1
+    pip install JPype1 \
+    pip install JCC
 
