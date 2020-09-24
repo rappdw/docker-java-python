@@ -11,14 +11,12 @@ RUN set -e; \
     apt-add-repository 'deb http://repos.azulsystems.com/debian stable main'; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        zulu-8 \
+        zulu-11 \
     ; \
     apt-get clean; \
     rm -rf /var/tmp/* /tmp/* /var/lib/apt/lists/*
 
-ENV JCC_JDK=/usr/lib/jvm/zulu-8-amd64/
-
 RUN set -e; \
-    pip install JPype1 \
-    pip install JCC
+    pip install JPype1
+
 
